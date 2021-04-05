@@ -1,4 +1,5 @@
-alias ll='ls -la --color'
+alias ls='ls --color'
+alias ll='ls -la'
 alias cp="cp -i"                    # Confirm before overwriting something
 alias df='df -h'                    # Human-readable sizes
 alias src="source $HOME/.zshrc"     # source ~/.zshrc
@@ -9,3 +10,7 @@ alias gs='git status'
 alias gd='git diff'
 
 alias assh='autossh -M 0'
+
+# singularity
+alias singexec='singularity exec --app dls --overlay /containers/overlays/2021-02-17_buster_texlive_unpacked.img "${container:-$(readlink -f /containers/stable/latest)}"'
+alias singshell='singexec zsh'
