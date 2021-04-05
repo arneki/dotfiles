@@ -5,12 +5,24 @@ colors
 # enable substitution for prompt
 setopt prompt_subst
 
-# Prompt (on left side) similar to default bash prompt, or redhat zsh prompt with colors
- #PROMPT="%(!.%{$fg[red]%}[%n@%m %1~]%{$reset_color%}# .%{$fg[green]%}[%n@%m %1~]%{$reset_color%}$ "
-# Maia prompt
-PROMPT="%B%{$fg[cyan]%}%(4~|%-1~/.../%2~|%~)%u%b >%{$fg[cyan]%}>%B%(?.%{$fg[cyan]%}.%{$fg[red]%})>%{$reset_color%}%b " # Print some system information when the shell is first started
-# Print a greeting message when shell is started
-echo $USER@$HOST  $(uname -srm) $(lsb_release -rcs)
+## Prompt on left side:
+#  - shows name of virtual env if enabled
+#  - shows username and host
+#  - shows singularity container info
+
+venv_prompt_string() {
+    [[ -n "$VIRTUAL_ENV" ]] && echo "(venv:${VIRTUAL_ENV##*/}) "
+}
+export VIRTUAL_ENV_DISABLE_PROMPT=1  # disable default venv prompt
+
+singularity_prompt_string() {
+    if [[ -n "$SINGULARITY_NAME" ]]; then
+        echo " %{$fg[blue]%}[${SINGULARITY_APPNAME:-no app}@${SINGULARITY_NAME}]"
+    fi
+}
+
+PROMPT="$(venv_prompt_string)%{$fg[yellow]%}%n@%m %{$fg[green]%}%(4~|%-1~/.../%2~|%~)%u$(singularity_prompt_string)"$'\n'"%{$reset_color%}\$ "
+
 ## Prompt on right side:
 #  - shows status of git when in git repository (code adapted from https://techanic.net/2012/12/30/my_git_prompt_for_zsh.html)
 #  - shows exit status of previous command (if previous command finished with an error)
@@ -72,11 +84,7 @@ git_prompt_string() {
   [ ! -n "$git_where" ] && echo "%{$fg[red]%} %(?..[%?])"
 }
 
-# Right prompt with exit status of previous command if not successful
- #RPROMPT="%{$fg[red]%} %(?..[%?])"
-# Right prompt with exit status of previous command marked with ✓ or ✗
- #RPROMPT="%(?.%{$fg[green]%}✓ %{$reset_color%}.%{$fg[red]%}✗ %{$reset_color%})"
-
+RPROMPT='$(git_prompt_string)'
 
 # Color man pages
 export LESS_TERMCAP_mb=$'\E[01;32m'
