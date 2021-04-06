@@ -1,4 +1,7 @@
-emulate ksh -c 'source /opt/init/modules.sh' 2>/dev/null
+WANG_MODULES=/wang/environment/software/Modules/current
+[ -f $WANG_MODULES/init/zsh ] && source $WANG_MODULES/init/zsh
+[ -f /opt/init/modules.sh ] && emulate ksh -c 'source /opt/init/modules.sh'
+
 
 powercycle () {
     module load tools-kintex7
