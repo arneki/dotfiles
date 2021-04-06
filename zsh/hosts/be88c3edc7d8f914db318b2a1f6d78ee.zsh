@@ -62,6 +62,9 @@ alias ssimulate='srun -p simulation --mem 29g -c 8 --pty singexec'
 alias sinteractive='srun -p interactive --mem 16g -c 1 --pty singexec'
 alias scompile='srun -p compile -c 8 --pty singexec'
 
+if [[ -z "$SINGULARITY_NAME" ]]; then
+    alias vim='singexec vim'
+fi
 
 use_tmux
 ccache_enable
