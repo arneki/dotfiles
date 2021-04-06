@@ -21,6 +21,53 @@ containers_cleanup () {
   rm /containers/stable/^($(readlink /containers/stable/latest)|latest)
 }
 
+envvar_clean () {
+    # clean an env variable of all entries matching a certain pattern
+    # $1: name of environment variable
+    # $2: pattern
+    local envvar="$1"
+    local pattern="$2"
+
+    if [ -z "${${envvar}:-}" ]; then
+        return
+    fi
+
+    local newval=$(eval "echo \$${envvar}" \
+        | tr ':' '\n' \
+        | grep -Fxv "${pattern}" \
+        | tr '\n' ':' \
+        | sed -e "s/:$//" -e "s/^://" -e "s/::\+/:/g")
+
+    if [ -z "${newval}" ]; then
+        unset ${envvar}
+    else
+        export ${envvar}="${newval}"
+    fi
+}
+
+envvar_path_prepend () {
+    # prepend path to environment variable
+    # $1: name of environment variable
+    # $2: path
+    local envvar="$1"
+    local path_to_add="$2"
+    envvar_clean "${envvar}" "${path_to_add}"
+    eval "local oldcontents=\"\${${envvar}}\"" >&2
+    export ${envvar}="${path_to_add}${oldcontents:+:$oldcontents}"
+}
+
+module_reload () {
+    module unload $1
+    module load $1
+}
+
+use_tmux() {
+    # attach to tmux session, create new if not exists
+    if [[ $- == *i* ]] && [[ -z "$TMUX" ]]; then
+          tmux attach-session -t $USER -d || tmux new-session -s $USER
+    fi
+}
+
 zsh_host_edit () {
     # edit host-specific zsh config
     $EDITOR "$(realpath ~/.zsh)/hosts/$(md5h).zsh"
