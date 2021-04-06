@@ -38,13 +38,6 @@ get_hashes () {
     done;
 }
 
-workdir () {
-    # use current directory as new workdir
-    module_reload waf
-    module_reload ppu-toolchain
-    module_reload localdir
-}
-
 ccache_enable () {
     # enable ccache
     envvar_path_prepend PATH "/usr/lib/ccache"
@@ -57,6 +50,14 @@ ccache_enable () {
     export CCACHE_LOGFILE=${CCACHE_DIR}/ccache.log
 }
 
+workdir () {
+    # use current directory as new workdir
+    module_reload waf
+    module_reload ppu-toolchain
+    module_reload localdir
+    ccache_enable
+}
+
 
 alias ssimulate='srun -p simulation --mem 29g -c 8 --pty singexec'
 alias sinteractive='srun -p interactive --mem 16g -c 1 --pty singexec'
@@ -65,6 +66,3 @@ alias scompile='srun -p compile -c 8 --pty singexec'
 if [[ -z "$SINGULARITY_NAME" ]]; then
     alias vim='singexec vim'
 fi
-
-use_tmux
-ccache_enable

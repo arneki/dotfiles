@@ -1,3 +1,8 @@
+# attach to tmux session, create new if none exists
+if [[ $- == *i* ]] && [[ -z "$TMUX" ]]; then
+      tmux new-session -t main || tmux new-session -s main
+fi
+
 source $HOME/.zsh/functions.zsh
 source $HOME/.zsh/options.zsh
 

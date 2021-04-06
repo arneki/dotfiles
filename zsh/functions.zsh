@@ -61,13 +61,6 @@ module_reload () {
     module load $1
 }
 
-use_tmux() {
-    # attach to tmux session, create new if not exists
-    if [[ $- == *i* ]] && [[ -z "$TMUX" ]]; then
-          tmux attach-session -t $USER -d || tmux new-session -s $USER
-    fi
-}
-
 zsh_host_edit () {
     # edit host-specific zsh config
     $EDITOR "$(realpath ~/.zsh)/hosts/$(md5h).zsh"
