@@ -20,3 +20,8 @@ containers_cleanup () {
   # remove all containers except of the latest
   rm /containers/stable/^($(readlink /containers/stable/latest)|latest)
 }
+
+zsh_host_edit () {
+    # edit host-specific zsh config
+    $EDITOR "$(realpath ~/.zsh)/hosts/$(md5h).zsh"
+}

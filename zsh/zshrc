@@ -4,5 +4,6 @@ source $HOME/.zsh/keybindings.zsh
 source $HOME/.zsh/aliases.zsh
 source $HOME/.zsh/theme.zsh
 source $HOME/.zsh/plugins.zsh
+[ -f ~/.zsh/hosts/$(md5h).zsh ] && source $HOME/.zsh/hosts/$(md5h).zsh
 
 # vim: ft=zsh
