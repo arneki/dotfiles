@@ -12,5 +12,5 @@ alias gd='git diff'
 alias assh='autossh -M 0'
 
 # singularity
-alias singexec='singularity exec --app dls --overlay /containers/overlays/2021-02-17_buster_texlive_unpacked.img "${container:-$(readlink -f /containers/stable/latest)}"'
-alias singshell='singexec zsh'
+alias -g singexec='singularity exec --app dls --overlay /containers/overlays/2021-02-17_buster_texlive_unpacked.img "${container:-$(readlink -f /containers/stable/latest)}"'
+alias -g singshell='singexec zsh'
