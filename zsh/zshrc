@@ -1,5 +1,10 @@
 source $HOME/.zsh/functions.zsh
 source $HOME/.zsh/options.zsh
+
+envvar_path_prepend PATH "$HOME/bin"
+envvar_path_prepend PATH "$HOME/local/bin"
+envvar_path_prepend PATH "$HOME/.local/bin"
+
 source $HOME/.zsh/keybindings.zsh
 source $HOME/.zsh/aliases.zsh
 source $HOME/.zsh/theme.zsh
