@@ -17,7 +17,7 @@ scube () {
     fpga_id=$1; shift;
     com="srun -p cube -t 48:00:00 --mem 39g --exclude=AMTHost11,AMTHost13 -c 8 --pty --wafer $wafer_id --fpga-without-aout $fpga_id singexec $@"
     echo $com
-    $com
+    eval $com
 }
 
 scubel () {
@@ -25,7 +25,7 @@ scubel () {
     fpga_id=$1; shift;
     com="srun -p cube -t 48:00:00 -n 1 --exclude=AMTHost11,AMTHost13 --pty --wafer $wafer_id --fpga-without-aout $fpga_id singexec $@"
     echo $com
-    $com
+    eval $com
 }
 
 get_hashes () {
