@@ -1,5 +1,5 @@
-# attach to tmux session, create new if none exists
-if [[ $- == *i* ]] && [[ -z "$TMUX" ]]; then
+# attach to tmux session if connected via ssh, create new if none exists
+if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
       tmux new-session -t main || tmux new-session -s main
 fi
 
