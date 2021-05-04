@@ -54,7 +54,9 @@ workdir () {
     # use current directory as new workdir
     module_reload waf
     module_reload ppu-toolchain
+    pushd ${1:-$(pwd)}
     module_reload localdir
+    popd
     ccache_enable
 }
 
