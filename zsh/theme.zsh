@@ -11,7 +11,7 @@ setopt prompt_subst
 #  - shows singularity container info
 
 venv_prompt_string() {
-    [[ -n "$VIRTUAL_ENV" ]] && echo "(venv:${VIRTUAL_ENV##*/}) "
+    [[ -n "$VIRTUAL_ENV" ]] && echo "(${VIRTUAL_ENV##*/}) "
 }
 export VIRTUAL_ENV_DISABLE_PROMPT=1  # disable default venv prompt
 
@@ -21,7 +21,7 @@ singularity_prompt_string() {
     fi
 }
 
-PROMPT="$(venv_prompt_string)%{$fg[yellow]%}%n@%m %{$fg[green]%}%(4~|%-1~/.../%2~|%~)%u$(singularity_prompt_string)"$'\n'"%{$reset_color%}\$ "
+PROMPT='$(venv_prompt_string)'"%{$fg[yellow]%}%n@%m %{$fg[green]%}%(4~|%-1~/.../%2~|%~)%u$(singularity_prompt_string)"$'\n'"%{$reset_color%}\$ "
 
 ## Prompt on right side:
 #  - shows status of git when in git repository (code adapted from https://techanic.net/2012/12/30/my_git_prompt_for_zsh.html)
