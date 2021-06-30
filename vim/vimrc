@@ -78,9 +78,8 @@ set number
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
 " Indentation options
-set shiftwidth=4
-set softtabstop=4
-set expandtab
+set ts=4 sts=4 sw=4 noexpandtab
+autocmd FileType py   setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType md   setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType c    setlocal ts=4 sts=4 sw=4 noexpandtab
