@@ -8,14 +8,30 @@ powercycle () {
     wafer_id=$1; shift;
     fpga_id=$1; shift;
     gres="cubex$(($wafer_id-60))"
-    srun -p cubectrl --wafer $wafer_id --fpga-without $fpga_id --gres $gres reconfigure_hxcube.py 3
+    srun -p cubectrl --wafer $wafer_id --fpga-without-aout $fpga_id --gres $gres powercycle_hxcube.py 3
+    module unload tools-kintex7
+}
+reconfigure () {
+    module load tools-kintex7
+    wafer_id=$1; shift;
+    fpga_id=$1; shift;
+    gres="cubex$(($wafer_id-60))"
+    srun -p cubectrl --wafer $wafer_id --fpga-without-aout $fpga_id --gres $gres reconfigure_hxcube.py 3
+    module unload tools-kintex7
+}
+enable_fpga () {
+    module load tools-kintex7
+    wafer_id=$1; shift;
+    fpga_id=$1; shift;
+    gres="cubex$(($wafer_id-60))"
+    srun -p cubectrl --wafer $wafer_id --fpga-without-aout $fpga_id --gres $gres singexec hxcube_enable_fpga.py 3 --skip-bootloader
     module unload tools-kintex7
 }
 
 scube () {
     wafer_id=$1; shift;
     fpga_id=$1; shift;
-    com="srun -p cube -t 48:00:00 --mem 39g -c 8 --pty --wafer $wafer_id --fpga-without-aout $fpga_id singexec $@"
+    com="srun -p cube -t 20:00:00 --mem 200g -c 8 --pty --wafer $wafer_id --fpga-without-aout $fpga_id singexec $@"
     echo $com
     eval $com
 }
@@ -23,7 +39,7 @@ scube () {
 scubel () {
     wafer_id=$1; shift;
     fpga_id=$1; shift;
-    com="srun -p cube -t 48:00:00 -n 1 --pty --wafer $wafer_id --fpga-without-aout $fpga_id singexec $@"
+    com="srun -p cube -t 1:00:00 -n 1 --pty --wafer $wafer_id --fpga-without-aout $fpga_id singexec $@"
     echo $com
     eval $com
 }
@@ -62,8 +78,10 @@ workdir () {
 
 
 alias ssimulate='srun -p simulation -t 48:00:00 --mem 29g -c 8 --pty singexec'
-alias sinteractive='srun -p interactive --mem 16g -c 48 --pty singexec'
+alias sinteractive='srun -p interactive --mem 128g -c 48 --pty singexec'
 alias scompile='srun -p compile -c 8 --pty singexec'
+alias seinc='srun -A einc -p einc -c 32 --pty singexec'
+alias seincl='srun -A einc -p einc -c 64 --pty singexec'
 
 if [[ -z "$SINGULARITY_NAME" ]]; then
     alias vim='singexec vim'
